@@ -2,7 +2,6 @@
 
     <item
         android:id="@+id/quit"
-        android:onClick="finish()"
         android:title="@string/menu_quit" android:enabled="true" android:visible="true"/>
 
 </menu>
