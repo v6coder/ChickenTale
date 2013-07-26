@@ -1,0 +1,55 @@
+{
+	"actionDescription": "",
+	"storyDescription": "You're a little chicken living in a little farm.  One day, you notice that the pen door is open.",
+	"firstAction": 
+	{
+		"actionDescription": "Walk out of the pen.",
+		"storyDescription": "You slowly make your way out of the pen and see two paths before you.",
+		"firstAction":
+		{
+			"actionDescription": "Take the dirt road into the woods.",
+			"storyDescription": "Your animal instincts lead you toward the woods and your little, chicken brain ceases to function.  When you finally came to, you are surrounded by trees and the dirt road has been replaced with rotting leaves.",
+			"firstAction":
+			{
+				"actionDescription": "Call for help.",
+				"storyDescription": "You let out a cluck and wait for a response.  You hear nothing so you let out a few more clucks.  Suddenly, a giant snake swallows you from behind!  Guess you shouldn't have attracted so much attention in such a strange place.",
+				"firstAction": null,
+				"secondAction": null
+				
+			},
+			"secondAction":
+			{
+				"actionDescription": "Wander around.",
+				"storyDescription": "You wander around the shrubbery for several hours.  The sun has already set, and you are still as lost as you were when you started wandering.",
+				"firstAction":
+				{
+					"actionDescription": "Find a hole to hide in.",
+					"storyDescription": "You search for a hole to hide in and stumble upon one immediately.  You slowly squeeze inside, and as the last of your tail feathers make their way in, a large rock falls and covers the entrance, trapping you in the hole!  You eventually starve to death.",
+					"firstAction": null,
+					"secondAction": null
+				},
+				"secondAction":
+				{
+					"actionDescription": "Take a nap on the spot.",
+					"storyDescription": "You lay down on a comfortable pile of leaves and close your eyes.  You never opened your eyes again.",
+					"firstAction": null,
+					"secondAction": null
+				}
+			}
+		},
+		"secondAction":
+		{
+			"actionDescription": "Take the rocky road into the house.",
+			"storyDescription": "You approach the entrance of the house and are greeted by the farmer's dog.  The greeting left you limp and with teeth marks all over your skinny neck.",
+			"firstAction": null,
+			"secondAction": null
+		}
+	},
+	"secondAction":
+	{
+		"actionDescription": "Stay in the pen.",
+		"storyDescription": "You decide to stay in the pen.  Unfortunately, this is the same thing you do everyday, so it's not a story worth telling.",
+		"firstAction": null,
+		"secondAction": null
+	}
+}

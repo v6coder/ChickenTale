@@ -1,0 +1,1 @@
+This project marks my first adventure in Android App development.  It is a simple text adventure that retrieves stories from a JSON file.
