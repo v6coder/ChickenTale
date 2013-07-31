@@ -1,12 +1,8 @@
 package com.chickentale;
 
-import java.io.InputStream;
-
-import org.codehaus.jackson.map.ObjectMapper;
-
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -17,10 +13,13 @@ import com.story.Story;
 /**
  * Main activity that waits for user swipes and updates stories accordingly
  */
-public class MainActivity extends Activity
+public class StoryActivity extends Activity
 {
 	// The current story to load
 	private Story story;
+	
+	// The progress bar to show users
+	private ProgressDialog progressDialog;
 	
 	// Views that can change based on the current story
 	private TextView storyView;
@@ -48,11 +47,24 @@ public class MainActivity extends Activity
 		secondActionTipView = (TextView) findViewById(R.id.secondActionTip);
 		instructionView = (TextView) findViewById(R.id.instruction);
 		
+		// Initialize progress dialog
+		progressDialog = new ProgressDialog(this);
+		progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		progressDialog.setMessage("Loading...");
+		
 		// Initialize our story
 		resetStory();
+	}
+	
+	@Override
+	protected void onPause()
+	{
+		super.onPause();
 		
-		// Update the views
-		updateTextViews();
+		if(progressDialog.isShowing())
+		{
+			progressDialog.dismiss();
+		}
 	}
 
 	@Override
@@ -110,28 +122,35 @@ public class MainActivity extends Activity
 	}
 	
 	/**
+	 * Sets the story for this activity
+	 * @param story the story to set for this activity
+	 */
+	public void setStory(Story story)
+	{
+		this.story = story;
+	}
+	
+	/**
+	 * Gets the progress dialog tied to this activity
+	 * @return progress dialog tied to this activity
+	 */
+	public ProgressDialog getProgressDialog()
+	{
+		return progressDialog;
+	}
+	
+	/**
 	 * Reinitializes the story
 	 */
 	private void resetStory()
 	{
-		try
-		{
-			// Initialize the story from a JSON file
-			ObjectMapper mapper = new ObjectMapper();
-			InputStream something = getAssets().open("Story.json");
-			story = mapper.readValue(something, Story.class);
-		}
-		catch (Exception e)
-		{
-			Log.d("Fatal Error", "Unable to load the story.");
-			finish();
-		}
+		new LoadStoryTask(this).execute(getApplicationContext());
 	}
 	
 	/**
 	 * Updates the views with the current story's description and actions
 	 */
-	private void updateTextViews()
+	public void updateTextViews()
 	{
 		storyView.setText(story.getStoryDescription());
 		firstActionView.setText(story.getFirstAction() != null ? story.getFirstAction().getActionDescription() : "");
