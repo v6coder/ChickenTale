@@ -5,7 +5,7 @@ import java.lang.ref.WeakReference;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import android.content.Context;
+import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -14,10 +14,12 @@ import com.story.Story;
 /**
  * Async task to load stories from JSON files
  */
-public class LoadStoryTask extends AsyncTask<Context, Integer, Story>
+public class LoadStoryTask extends AsyncTask<AssetManager, Integer, Story>
 {
 	// Weak reference to the activity 
-	private WeakReference<StoryActivity> activity;
+	private WeakReference<StoryActivity> activityReference;
+	
+	private String storyFilePath;
 	
 	/**
 	 * Constructs a task to load stories for the given activity
@@ -25,32 +27,51 @@ public class LoadStoryTask extends AsyncTask<Context, Integer, Story>
 	 */
 	LoadStoryTask(StoryActivity activity)
 	{
-		this.activity = new WeakReference<StoryActivity>(activity);
+		storyFilePath = activity.getStoryFilePath();
+		activityReference = new WeakReference<StoryActivity>(activity);
 	}
 	
 	@Override
 	protected void onPreExecute()
 	{
+		StoryActivity activity = activityReference.get();
+		
+		// Do not proceed if we have a null activity
+		if (activity == null)
+		{
+			return;
+		}
+		
 		// Start the progress dialog
-		activity.get().getProgressDialog().show();
+		publishProgress(0);
+		activity.getProgressDialog().show();
 	}
 	
 	@Override
-	protected Story doInBackground(Context... params)
+	protected Story doInBackground(AssetManager... params)
 	{
 		try
 		{
+			AssetManager manager = params[0];
+			
+			if (manager == null)
+			{
+				return null;
+			}
+			
+			// Initialize the story from a story file path (pointing to a JSON file)
+			ObjectMapper mapper = new ObjectMapper();
+			InputStream storyStream = manager.open(storyFilePath);
+			Story story = mapper.readValue(storyStream, Story.class);
+			
 			// Fake load time...
 			for (int x = 0; x < 100; x++)
 			{
 				Thread.sleep(10);
-				activity.get().getProgressDialog().setProgress(x);
+				publishProgress(x);
 			}
 			
-			// Initialize the story from a JSON file (shouldn't explicitly declare a file name here)
-			ObjectMapper mapper = new ObjectMapper();
-			InputStream something = params[0].getAssets().open("Story.json");
-			return mapper.readValue(something, Story.class);
+			return story;
 		}
 		catch (Exception e)
 		{
@@ -58,22 +79,44 @@ public class LoadStoryTask extends AsyncTask<Context, Integer, Story>
 			return null;
 		}
 	}
+	
+	@Override
+	protected void onProgressUpdate(Integer... progress)
+	{
+		StoryActivity activity = activityReference.get();
+		
+		// Do not proceed if we have a null activity
+		if (activity == null)
+		{
+			return;
+		}
+		
+		activityReference.get().getProgressDialog().setProgress(progress[0]);
+	}
 
 	@Override
 	protected void onPostExecute(Story result)
 	{
+		StoryActivity activity = activityReference.get();
+		
+		// Do not proceed if we have a null activity
+		if (activity == null)
+		{
+			return;
+		}
+		
 		// Kill the progress dialog
-		activity.get().getProgressDialog().dismiss();
+		activity.getProgressDialog().dismiss();
 		
 		// If we didn't get a story, kill the app
 		if (result == null)
 		{
-			activity.get().finish();
+			activity.finish();
 			return;
 		}
 		
 		// Update data and views with loaded story
-		activity.get().setStory(result);		
-		activity.get().updateTextViews();
+		activity.setStory(result);		
+		activity.updateTextViews();
 	}
 }

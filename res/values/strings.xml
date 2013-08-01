@@ -5,9 +5,11 @@
     <string name="action_settings">Settings</string>
     <string name="menu_quit">Quit</string>
     
-    <string name="story_text">Story</string>
-    <string name="first_action_text">First Action</string>
-    <string name="second_action_text">Second Action</string>
+    <string name="story_file_path">Story.json</string>
+    
+    <string name="story_text">Story is loading&#8230;</string>
+    <string name="first_action_text">Action is loading&#8230;</string>
+    <string name="second_action_text">Action is loading&#8230;</string>
     <string name="first_action_tip">&lt;&lt;&lt; SWIPE</string>
     <string name="second_action_tip">SWIPE &gt;&gt;&gt;</string>
     <string name="story_instructions">Swipe left/right to continue the story.</string>

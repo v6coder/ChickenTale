@@ -122,6 +122,15 @@ public class StoryActivity extends Activity
 	}
 	
 	/**
+	 * Gets the story file path
+	 * @return the story file path
+	 */
+	public String getStoryFilePath()
+	{
+		return getString(R.string.story_file_path);
+	}
+	
+	/**
 	 * Sets the story for this activity
 	 * @param story the story to set for this activity
 	 */
@@ -144,7 +153,7 @@ public class StoryActivity extends Activity
 	 */
 	private void resetStory()
 	{
-		new LoadStoryTask(this).execute(getApplicationContext());
+		new LoadStoryTask(this).execute(getAssets());
 	}
 	
 	/**
