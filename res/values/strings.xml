@@ -7,6 +7,9 @@
     
     <string name="story_file_path">Story.json</string>
     
+    <string name="progress_dialog_fragment_tag">PROGRESS_DIALOG</string>
+    <string name="loading_text">Loading&#8230;</string>
+    
     <string name="story_text">Story is loading&#8230;</string>
     <string name="first_action_text">Action is loading&#8230;</string>
     <string name="second_action_text">Action is loading&#8230;</string>

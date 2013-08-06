@@ -1,8 +1,7 @@
 package com.chickentale;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -13,13 +12,13 @@ import com.story.Story;
 /**
  * Main activity that waits for user swipes and updates stories accordingly
  */
-public class StoryActivity extends Activity
+public class StoryActivity extends FragmentActivity
 {
 	// The current story to load
 	private Story story;
 	
 	// The progress bar to show users
-	private ProgressDialog progressDialog;
+	private ProgressDialogFragment progressDialog;
 	
 	// Views that can change based on the current story
 	private TextView storyView;
@@ -47,11 +46,6 @@ public class StoryActivity extends Activity
 		secondActionTipView = (TextView) findViewById(R.id.secondActionTip);
 		instructionView = (TextView) findViewById(R.id.instruction);
 		
-		// Initialize progress dialog
-		progressDialog = new ProgressDialog(this);
-		progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		progressDialog.setMessage("Loading...");
-		
 		// Initialize our story
 		resetStory();
 	}
@@ -61,9 +55,10 @@ public class StoryActivity extends Activity
 	{
 		super.onPause();
 		
-		if(progressDialog.isShowing())
+		ProgressDialogFragment dialog = (ProgressDialogFragment) getSupportFragmentManager().findFragmentByTag(getProgressDialogTag());
+		if (dialog != null)
 		{
-			progressDialog.dismiss();
+			dialog.dismiss();	
 		}
 	}
 
@@ -121,6 +116,11 @@ public class StoryActivity extends Activity
 		}
 	}
 	
+	public String getProgressDialogTag()
+	{
+		return getString(R.string.progress_dialog_fragment_tag);
+	}
+	
 	/**
 	 * Gets the story file path
 	 * @return the story file path
@@ -140,19 +140,18 @@ public class StoryActivity extends Activity
 	}
 	
 	/**
-	 * Gets the progress dialog tied to this activity
-	 * @return progress dialog tied to this activity
-	 */
-	public ProgressDialog getProgressDialog()
-	{
-		return progressDialog;
-	}
-	
-	/**
 	 * Reinitializes the story
 	 */
 	private void resetStory()
 	{
+		// Initialize progress dialog
+		progressDialog = (ProgressDialogFragment) getSupportFragmentManager().findFragmentByTag(getProgressDialogTag());
+		if (progressDialog == null)
+		{
+			progressDialog = new ProgressDialogFragment();
+			progressDialog.show(this.getSupportFragmentManager(), getProgressDialogTag());
+		}
+		
 		new LoadStoryTask(this).execute(getAssets());
 	}
 	

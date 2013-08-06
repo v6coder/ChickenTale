@@ -42,9 +42,8 @@ public class LoadStoryTask extends AsyncTask<AssetManager, Integer, Story>
 			return;
 		}
 		
-		// Start the progress dialog
+		// Reset the progress dialog
 		publishProgress(0);
-		activity.getProgressDialog().show();
 	}
 	
 	@Override
@@ -91,7 +90,11 @@ public class LoadStoryTask extends AsyncTask<AssetManager, Integer, Story>
 			return;
 		}
 		
-		activityReference.get().getProgressDialog().setProgress(progress[0]);
+		ProgressDialogFragment progressDialog = (ProgressDialogFragment) activity.getSupportFragmentManager().findFragmentByTag(activity.getProgressDialogTag());
+		if (progressDialog != null)
+		{
+			progressDialog.setProgress(progress[0]);	
+		}
 	}
 
 	@Override
@@ -106,7 +109,12 @@ public class LoadStoryTask extends AsyncTask<AssetManager, Integer, Story>
 		}
 		
 		// Kill the progress dialog
-		activity.getProgressDialog().dismiss();
+		ProgressDialogFragment progressDialog = (ProgressDialogFragment) activity.getSupportFragmentManager().findFragmentByTag(activity.getProgressDialogTag());
+		if (progressDialog != null)
+		{
+			progressDialog.dismiss();	
+		}
+		
 		
 		// If we didn't get a story, kill the app
 		if (result == null)
