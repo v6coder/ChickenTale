@@ -13,8 +13,8 @@
     <string name="story_text">Story is loading&#8230;</string>
     <string name="first_action_text">Action is loading&#8230;</string>
     <string name="second_action_text">Action is loading&#8230;</string>
-    <string name="first_action_tip">&lt;&lt;&lt; SWIPE</string>
-    <string name="second_action_tip">SWIPE &gt;&gt;&gt;</string>
+    <string name="first_action_tip">&lt;&lt;&lt; SWIPE LEFT</string>
+    <string name="second_action_tip">SWIPE RIGHT &gt;&gt;&gt;</string>
     <string name="story_instructions">Swipe left/right to continue the story.</string>
     <string name="the_end_instructions">You\'ve reached The End of the story.  Tap to restart the story.</string>
 
